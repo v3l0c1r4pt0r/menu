@@ -1,4 +1,5 @@
 import pkgutil
+import importlib
 
 PLUGIN_PACKAGE_PREFIX = 'menu_plugin_'
 
@@ -9,11 +10,18 @@ def find_plugins():
       plugin_list.append(p.name)
   return plugin_list
 
+def register_plugin(plugin_name):
+  try:
+    plugin = importlib.import_module(f'{plugin_name}.plugin')
+  except ModuleNotFoundError:
+    print(f'Plugin {plugin_name} is broken')
+
 def main():
   print('Found following plugins:')
   plugins = find_plugins()
   for plugin in plugins:
     print(f'\t{plugin}')
+    register_plugin(plugin)
 
 if __name__ == '__main__':
   main()

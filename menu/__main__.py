@@ -29,6 +29,10 @@ def main():
     print(f'\t{plugin}')
     register_plugin(plugin)
   logger.fatal('Not implemented')
+  logger.error('Not implemented')
+  logger.warning('Not implemented')
+  logger.info('Not implemented')
+  logger.debug('Not implemented')
 
 if __name__ == '__main__':
   main()

@@ -18,14 +18,24 @@ class Format:
 
 
 class Style(Enum):
-  NORMAL = 0
+  OFF = 0
   BOLD = 1
-  WTF = 20
 
 
 class Color(Enum):
   RED = 31
+  GREEN = 32
+  YELLOW = 33
+  BLUE = 34
+  MAGENTA = 35
+  CYAN = 36
+  DARK_GREY = 90
   LIGHT_RED = 91
+  LIGHT_GREEN = 92
+  LIGHT_YELLOW = 93
+  LIGHT_BLUE = 94
+  LIGHT_MAGENTA = 95
+  LIGHT_CYAN = 96
 
 
 class ColoringFormatter(logging.Formatter):
@@ -33,7 +43,13 @@ class ColoringFormatter(logging.Formatter):
   fmt = '{start}%(levelname)s/%(name)s [%(asctime)s]: %(message)s{stop}'
   FORMATS = {
     logging.FATAL: fmt.format(start=Format(Style.BOLD, Color.RED),
-        stop=Format(Style.NORMAL)),
+        stop=Format(Style.OFF)),
+    logging.ERROR: fmt.format(start=Format(color=Color.LIGHT_RED),
+        stop=Format(Style.OFF)),
+    logging.WARNING: fmt.format(start=Format(color=Color.LIGHT_YELLOW),
+        stop=Format(Style.OFF)),
+    logging.DEBUG: fmt.format(start=Format(color=Color.DARK_GREY),
+        stop=Format(Style.OFF)),
     logging.NOTSET: fmt.format(start='', stop=''),
   }
 

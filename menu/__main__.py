@@ -52,5 +52,8 @@ class Menu:
     return args.func(args)
 
 
+def main():
+  Menu().main(sys.argv)
+
 if __name__ == '__main__':
-  sys.exit(Menu().main(sys.argv))
+  sys.exit(main())

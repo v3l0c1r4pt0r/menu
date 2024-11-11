@@ -74,7 +74,7 @@ class Logger:
 
     # create main logger
     self.main_logger = logging.getLogger(appname)
-    self.main_logger.setLevel(logging.DEBUG)
+    self.main_logger.setLevel(logging.INFO)
 
     # create console handler
     handler = logging.StreamHandler()

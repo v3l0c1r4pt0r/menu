@@ -14,6 +14,8 @@ log.debug(f'Logger instantiated')
 
 class Menu:
 
+  logging_levels = ['FATAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG']
+
   def __init__(self):
     self.create_ui()
     self.plugins = self.find_plugins()
@@ -45,12 +47,20 @@ class Menu:
     self.parser = argparse.ArgumentParser(description='Menu', prog='m')
     self.subparsers = self.parser.add_subparsers(required=True)
 
+    # add global arguments
+    self.parser.add_argument('-v', '--verbosity', metavar='LEVEL', default='INFO',
+        help='Set verbosity to LEVEL', choices=self.logging_levels)
+
   def execute(self, argv, parser, subparsers):
     if len(argv) == 0:
       parser.print_usage()
       return 255
     argcomplete.autocomplete(parser)
     args = parser.parse_args(argv)
+
+    # consume global arguments
+    log.setLevel(args.verbosity)
+
     return args.func(args)
 
 

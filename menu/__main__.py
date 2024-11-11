@@ -1,5 +1,7 @@
 import pkgutil
 import importlib
+import argparse
+import sys
 
 from menu.logger import Logger
 from menu.hook import Hook
@@ -25,16 +27,28 @@ def register_plugin(plugin_name):
   except ModuleNotFoundError:
     log.error(f'Plugin {plugin_name} is broken Skipping')
 
-def main():
+def create_ui():
+  parser = argparse.ArgumentParser(description='Menu', prog='m')
+  subparsers = parser.add_subparsers(required=True)
+
+  return parser, subparsers
+
+def execute(argv, parser, subparsers):
+  if len(argv) == 0:
+    parser.print_usage()
+    return 255
+  args = parser.parse_args(argv)
+  return args.func(args)
+
+def main(argv):
+  parser, subparsers = create_ui()
+
   plugins = find_plugins()
   for plugin in plugins:
     log.debug(f'Processing plugin: {plugin}')
     register_plugin(plugin)
-  log.fatal('Not implemented')
-  log.error('Not implemented')
-  log.warning('Not implemented')
-  log.info('Not implemented')
-  log.debug('Not implemented')
+
+  return execute(argv[1:], parser, subparsers)
 
 if __name__ == '__main__':
-  main()
+  sys.exit(main(sys.argv))

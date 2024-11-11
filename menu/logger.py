@@ -3,11 +3,18 @@ from enum import Enum
 
 class Format:
 
-  def __init__(self, style, color=None):
-    pass
+  def __init__(self, style=None, color=None):
+    self.style = style
+    self.color = color
 
   def __str__(self):
-    return ''
+    stack = []
+    if self.color is not None:
+      stack.append(str(self.color.value))
+    if self.style is not None:
+      stack.append(str(self.style.value))
+    seq_list = ';'.join(stack)
+    return f'\033[{seq_list}m'
 
 
 class Style(Enum):

@@ -85,4 +85,5 @@ class Logger:
     self.main_logger.addHandler(handler)
 
   def get(module):
-    return Logger.logger.main_logger.getLogger(module)
+    module = module.replace('menu_plugin_', 'plugin.')
+    return Logger.logger.main_logger.getChild(module)

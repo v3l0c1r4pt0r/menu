@@ -5,7 +5,7 @@ from menu.logger import Logger
 
 PLUGIN_PACKAGE_PREFIX = 'menu_plugin_'
 
-logger = Logger(__name__).main_logger
+logger = Logger('menu').main_logger
 logger.debug(f'Logger instantiated')
 
 def find_plugins():

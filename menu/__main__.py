@@ -15,6 +15,7 @@ def register_plugin(plugin_name):
     plugin = importlib.import_module(f'{plugin_name}.plugin')
   except ModuleNotFoundError:
     print(f'Plugin {plugin_name} is broken')
+  plugin.register()
 
 def main():
   print('Found following plugins:')

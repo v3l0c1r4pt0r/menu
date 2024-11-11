@@ -1,5 +1,6 @@
 import pkgutil
 import importlib
+import argcomplete
 import argparse
 import sys
 
@@ -48,6 +49,7 @@ class Menu:
     if len(argv) == 0:
       parser.print_usage()
       return 255
+    argcomplete.autocomplete(parser)
     args = parser.parse_args(argv)
     return args.func(args)
 

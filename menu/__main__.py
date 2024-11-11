@@ -34,7 +34,7 @@ class Menu:
   def register_plugin(self, plugin_name):
     try:
       plugin = importlib.import_module(f'{plugin_name}.plugin')
-      hook = Hook()
+      hook = Hook(self.subparsers)
       log.debug(f'Hook created: {hook}')
       plugin.register(hook)
     except ModuleNotFoundError:

@@ -2,6 +2,7 @@ import pkgutil
 import importlib
 
 from menu.logger import Logger
+from menu.hook import Hook
 
 PLUGIN_PACKAGE_PREFIX = 'menu_plugin_'
 
@@ -18,7 +19,9 @@ def find_plugins():
 def register_plugin(plugin_name):
   try:
     plugin = importlib.import_module(f'{plugin_name}.plugin')
-    plugin.register()
+    hook = Hook()
+    log.debug(f'Hook created: {hook}')
+    plugin.register(hook)
   except ModuleNotFoundError:
     log.error(f'Plugin {plugin_name} is broken Skipping')
 

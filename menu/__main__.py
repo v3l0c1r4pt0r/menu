@@ -5,8 +5,8 @@ from menu.logger import Logger
 
 PLUGIN_PACKAGE_PREFIX = 'menu_plugin_'
 
-logger = Logger('menu').main_logger
-logger.debug(f'Logger instantiated')
+log = Logger('menu').main_logger
+log.debug(f'Logger instantiated')
 
 def find_plugins():
   plugin_list = []
@@ -19,20 +19,20 @@ def register_plugin(plugin_name):
   try:
     plugin = importlib.import_module(f'{plugin_name}.plugin')
   except ModuleNotFoundError:
-    print(f'Plugin {plugin_name} is broken')
+    log.error(f'Plugin {plugin_name} is broken Skipping')
+    return
   plugin.register()
 
 def main():
-  print('Found following plugins:')
   plugins = find_plugins()
   for plugin in plugins:
-    print(f'\t{plugin}')
+    log.debug(f'Processing plugin: {plugin}')
     register_plugin(plugin)
-  logger.fatal('Not implemented')
-  logger.error('Not implemented')
-  logger.warning('Not implemented')
-  logger.info('Not implemented')
-  logger.debug('Not implemented')
+  log.fatal('Not implemented')
+  log.error('Not implemented')
+  log.warning('Not implemented')
+  log.info('Not implemented')
+  log.debug('Not implemented')
 
 if __name__ == '__main__':
   main()

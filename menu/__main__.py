@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import pkgutil
 import importlib
 import argcomplete

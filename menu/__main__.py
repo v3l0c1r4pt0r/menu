@@ -21,7 +21,24 @@ class Menu:
     self.create_ui()
     self.plugins = self.find_plugins()
 
+  def setLogLevel(self, argv):
+    idx = -1
+    try:
+      idx = argv.index('-v')
+    except ValueError:
+      pass
+    try:
+      idx = argv.index('--verbose')
+    except ValueError:
+      pass
+    if idx != -1:
+      try:
+        log.setLevel(argv[idx+1])
+      except IndexError:
+        pass
+
   def main(self, argv):
+    self.setLogLevel(argv)
     for plugin in self.plugins:
       log.debug(f'Processing plugin: {plugin}')
       self.register_plugin(plugin)

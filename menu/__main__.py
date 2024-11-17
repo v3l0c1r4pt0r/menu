@@ -52,10 +52,11 @@ class Menu:
         help='Set verbosity to LEVEL', choices=self.logging_levels)
 
   def execute(self, argv, parser, subparsers):
+    argcomplete.autocomplete(parser)
+    log.debug('Argcomplete completion got called')
     if len(argv) == 0:
       parser.print_usage()
       return 255
-    argcomplete.autocomplete(parser)
     args = parser.parse_args(argv)
 
     # consume global arguments

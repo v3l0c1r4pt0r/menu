@@ -6,12 +6,14 @@ import argparse
 import sys
 
 from menu.logger import Logger
-from menu.hook import Hook
-
-PLUGIN_PACKAGE_PREFIX = 'menu_plugin_'
 
 log = Logger('menu').main_logger
 log.debug(f'Logger instantiated')
+
+from menu.hook import Hook
+from menu.plugin import Plugin, Plugins
+
+PLUGIN_PACKAGE_PREFIX = 'menu_plugin_'
 
 class Menu:
 
@@ -19,7 +21,7 @@ class Menu:
 
   def __init__(self):
     self.create_ui()
-    self.plugins = self.find_plugins()
+    self.plugins = Plugins()
 
   def setLogLevel(self, argv):
     idx = -1
@@ -39,25 +41,23 @@ class Menu:
 
   def main(self, argv):
     self.setLogLevel(argv)
-    for plugin in self.plugins:
-      log.debug(f'Processing plugin: {plugin}')
-      self.register_plugin(plugin)
+    self.register_plugins()
 
     return self.execute(argv[1:], self.parser, self.subparsers)
 
-  def find_plugins(self):
-    plugin_list = []
+  def register_plugins(self):
     for p in pkgutil.iter_modules():
       if p.name.startswith(PLUGIN_PACKAGE_PREFIX):
-        plugin_list.append(p.name)
-    return plugin_list
+        self.register_plugin(p.name)
 
   def register_plugin(self, plugin_name):
+    log.debug(f'Registering plugin {plugin_name}')
     try:
-      plugin = importlib.import_module(f'{plugin_name}.plugin')
+      plugin_module = importlib.import_module(f'{plugin_name}.plugin')
       hook = Hook(self.subparsers)
       log.debug(f'Hook created: {hook}')
-      plugin.register(hook)
+      plugin_obj = plugin_module.init(self.plugins)
+      plugin_obj.register(hook)
     except ModuleNotFoundError:
       log.error(f'Plugin {plugin_name} is broken Skipping')
 

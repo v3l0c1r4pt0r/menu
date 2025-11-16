@@ -29,6 +29,7 @@ class Config:
       self.create(file)
     with open(file, 'r') as fp:
       self.obj = json.load(fp)
+    self.filename = file
 
   """Get property from config"""
   def get(self, prop):
@@ -38,7 +39,12 @@ class Config:
     return self.obj[prop]
 
   def set(self, prop, value):
-    log.debug(f'Attempted change to {prop} = {value}')
+    log.debug(f'Changed {prop} to {value}')
+    if self.obj is None:
+      self.load()
+    self.obj[prop] = value
 
   def save(self):
     log.debug(f'Saving config for {self.name}')
+    with open(self.filename, 'w') as fp:
+      json.dump(self.obj, fp)

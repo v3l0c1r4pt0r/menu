@@ -15,11 +15,27 @@ plugin](https://github.com/v3l0c1r4pt0r/menu-plugin-demo) project
 1. Each plugin must provide package `menu_plugin_$pluginname` in order to be
 detected by menu (use poetry to have that one out of the box)
 2. In this default package there must be at least one module called `plugin.py`
-3. This module must provide register function with one argument - hook
-4. This hook provides certain capabilities described separately
-5. Plugins can get access to logging facility of main menu by importing
+3. This module must provide init function that gets plugins object as argument
+   and must use it to instantiate object inheriting after Plugin object from
+   menu.plugin module
+4. Plugin class must provide register method with one argument - hook
+5. This hook provides certain capabilities described separately
+6. Plugin class usually should also define execute method to handle args from
+   argparse module
+7. Plugins can get access to logging facility of main menu by importing
 `menu.logger.Logger`, then getting its own child logger with:
 `Logger.get(__name__)`, where `__name__` part is crucial to stay this way
+
+### Plugin class
+
+This is the class after which each new plugin should inherit. It provides
+following methods:
+
+1. `depend(plugin)` - allows to depend on other plugins, so that their configs
+   could be accessed
+
+There also some default properties of plugin objects:
+1. `config` - allows manipulating its configuration
 
 ### Hook capabilities
 
